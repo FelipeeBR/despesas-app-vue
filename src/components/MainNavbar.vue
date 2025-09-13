@@ -10,7 +10,7 @@
 <script>
 import { useRouter } from "vue-router";
 export default {
-  name: "MainNavibar",
+  name: "MainNavbar",
   setup() {
     const router = useRouter();
     const logout = () => {
@@ -22,7 +22,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     $background-navbar: #333;
     $text-color: #fff;
     $hover-color: #3498db;
