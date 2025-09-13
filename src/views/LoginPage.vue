@@ -99,8 +99,8 @@ export default {
         width: 100%;
         padding: 14px 20px;
         margin: auto;
-        border: 2px solid $border-color;
-        border-radius: 8px;
+        border: 1px solid $border-color;
+        border-radius: 5px;
         font-size: 16px;
         transition: $transition;
         background-color: white;
@@ -121,8 +121,9 @@ export default {
         padding: 14px 20px;
         background: linear-gradient(135deg, $primary-color, $primary-hover);
         color: white;
-        border: none;
-        border-radius: 8px;
+        border: 1px solid #1f232826;
+        border-color: #1f232826;
+        border-radius: 5px;
         font-size: 16px;
         font-weight: 600;
         cursor: pointer;
@@ -151,11 +152,12 @@ export default {
         > div {
             background: white;
             padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            box-shadow: 0px 1px 1px 0px #1f23280f;
             width: 100%;
             max-width: 400px;
-            backdrop-filter: blur(10px);
+            border: 1px solid #1f2328;
+            border-color: #d1d9e0;
         }
     }
 
