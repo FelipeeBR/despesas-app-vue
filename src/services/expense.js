@@ -21,3 +21,11 @@ export async function getExpenses() {
         },
     });
 }
+
+export async function getExpenseId(id) {
+    return axios.get(`${api.defaults.baseURL}/expense/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+}

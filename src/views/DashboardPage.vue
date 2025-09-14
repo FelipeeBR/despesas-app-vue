@@ -74,21 +74,26 @@
                     </th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr v-for="expense in expenses" :key="expense.id">
-                    <th>{{ expense.description }}</th>
-                    <td>{{ categories.find(cat => cat.id === expense.category_id)?.name || '—' }}</td>
-                    <td>{{ expense.amount }}</td>
-                    <td>{{ expense.date }}</td>
-                    <th class="actions">
-                        <a class="btn-view" :href="'/dashboard/' + expense.id">
-                            <v-icon name="fa-eye" />
-                        </a>
-                        <button class="btn-delete">
-                            <v-icon name="bi-trash-fill" />
-                        </button>
-                    </th>
-                </tr>
+                <tbody v-if="expenses.length > 0">
+                    <tr v-for="expense in expenses" :key="expense.id">
+                        <th>{{ expense.description }}</th>
+                        <td>{{ categories.find(cat => cat.id === expense.category_id)?.name || '—' }}</td>
+                        <td>{{ expense.amount }}</td>
+                        <td>{{ expense.date }}</td>
+                        <th class="actions">
+                            <router-link class="btn-view" :to="{ name: 'expense-detail', params: { id: expense.id }}">
+                                <v-icon name="fa-eye" />
+                            </router-link>
+                            <button class="btn-delete">
+                                <v-icon name="bi-trash-fill" />
+                            </button>
+                        </th>
+                    </tr>
+                </tbody>
+                <tbody v-else>
+                    <tr>
+                        <td colspan="5">Nenhuma despesa encontrada</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -98,7 +103,7 @@
 <script>
 import MainNavbar from "@/components/MainNavbar.vue";
 import ModalComponent from "@/components/ModalComponent.vue";
-import { onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue';
 import { createExpense, getExpenses } from "@/services/expense";
 import { getCategories } from "@/services/category";
 import { useForm } from 'vue-hooks-form';

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import LoginPage from "../views/LoginPage.vue";
 import DashboardPage from "../views/DashboardPage.vue";
 import RegisterPage from "@/views/RegisterPage.vue";
+import ExpenseDetail from "@/views/ExpenseDetail.vue";
 
 const routes = [
     { path: "/login", name: "Login", component: LoginPage },
@@ -12,6 +13,7 @@ const routes = [
         meta: { requiresAuth: true } 
     },
     { path: "/register", name: "Register", component: RegisterPage },
+    { path: "/expense/:id", name: "expense-detail", component: ExpenseDetail, meta: { requiresAuth: true }, props: true },
 ];
 
 const router = createRouter({
