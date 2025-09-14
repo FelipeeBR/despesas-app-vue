@@ -1,81 +1,98 @@
 <template>
-  <MainNavbar />
-  <div class="container">
-    <div class="actions-buttons">
-        <button class="btn-primary">Categorias</button>
-        <button class="btn-secondary" @click="showModal = true">Nova Despesa</button>
-        <ModalComponent v-if="showModal" @close="showModal = false">
-            <h2>Nova Despesa</h2>
-            <form @submit.prevent="onSubmit">
-                <div class="input-group">
-                    <input v-model="description.value" :ref="description.ref" type="text" placeholder="Descrição">
-                    <p v-if="description.error" class="error">{{ description.error.message }}</p>
-                </div>
-                <div class="input-group">
-                    <label for="category">Categoria</label>
-                    <select id="category" v-model="category.value" :ref="category.ref">
-                        <option value="" disabled>Selecione uma categoria</option>
-                        <option
-                        v-for="category in categories"
-                        :key="category.id"
-                        :value="category.id"
-                        >
-                        {{ category.name }}
-                        </option>
-                    </select>
-                    <p v-if="category.error" class="error">{{ category.error.message }}</p>
-                </div>
-                <div class="input-group">
-                    <input v-model="amount.value" :ref="amount.ref" type="number" placeholder="Valor R$">
-                    <p v-if="amount.error" class="error">{{ amount.error.message }}</p>
-                </div>
-                <div class="input-group">
-                    <input v-model="date.value" :ref="date.ref" type="date" placeholder="Data">
-                    <p v-if="date.error" class="error">{{ date.error.message }}</p>
-                </div>
-                <button type="submit">Salvar</button>
-                <button @click="showModal = false">Fechar</button>
-            </form>
-        </ModalComponent>
-    </div>
+    <MainNavbar />
+    <div class="container">
+        <div class="actions-buttons">
+            <button class="btn-primary">Categorias</button>
+            <button class="btn-secondary" @click="showModal = true">Nova Despesa</button>
+            <ModalComponent v-if="showModal" @close="showModal = false">
+                <h2>Nova Despesa</h2>
+                <form @submit.prevent="onSubmit">
+                    <div class="input-group">
+                        <input v-model="description.value" :ref="description.ref" type="text" placeholder="Descrição">
+                        <p v-if="description.error" class="error">{{ description.error.message }}</p>
+                    </div>
+                    <div class="input-group">
+                        <select id="category" v-model="category.value" :ref="category.ref">
+                            <option value="" disabled>Selecione uma categoria</option>
+                            <option
+                            v-for="category in categories"
+                            :key="category.id"
+                            :value="category.id"
+                            >
+                            {{ category.name }}
+                            </option>
+                        </select>
+                        <p v-if="category.error" class="error">{{ category.error.message }}</p>
+                    </div>
+                    <div class="input-group">
+                        <input v-model="amount.value" :ref="amount.ref" type="number" placeholder="Valor R$">
+                        <p v-if="amount.error" class="error">{{ amount.error.message }}</p>
+                    </div>
+                    <div class="input-group">
+                        <input v-model="date.value" :ref="date.ref" type="date" placeholder="Data">
+                        <p v-if="date.error" class="error">{{ date.error.message }}</p>
+                    </div>
+                    <button type="submit">Salvar</button>
+                    <button @click="showModal = false">Fechar</button>
+                </form>
+            </ModalComponent>
+        </div>
 
-    <div class="table-container">
-      <table class="table-latitude">
-        <caption>Despesas</caption>
-        <thead>
-          <tr>
-            <th>Descrição</th>
-            <th>Categoria</th>
-            <th>Valor</th>
-            <th>Data</th>
-            <th>Ações</th>
-          </tr>
-          <tr class="filters">
-            <th></th>
-            <th><input type="text" placeholder="Filtrar categoria" /></th>
-            <th><input type="text" placeholder="Filtrar valor" /></th>
-            <th><input type="text" placeholder="Filtrar data" /></th>
-            <th>
-                <button>Filtrar</button>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="expense in expenses" :key="expense.id">
-            <th>{{ expense.description }}</th>
-            <td>{{ categories.find(cat => cat.id === expense.category_id)?.name || '—' }}</td>
-            <td>{{ expense.amount }}</td>
-            <td>{{ expense.date }}</td>
-            <th>
-                <button class="btn-create">Visualizar</button>
-                <button class="btn-edit">Editar</button>
-                <button class="btn-delete">Excluir</button>
-            </th>
-          </tr>
-        </tbody>
-      </table>
+        <div class="table-container">
+            <table class="table-latitude">
+                <caption>Despesas</caption>
+                <thead>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Categoria</th>
+                    <th>Valor</th>
+                    <th>Data</th>
+                    <th>Ações</th>
+                </tr>
+                <tr class="filters">
+                    <th></th>
+                    <th>
+                        <select>
+                            <option value="" disabled>Selecione uma categoria</option>
+                            <option
+                            v-for="category in categories"
+                            :key="category.id"
+                            :value="category.id"
+                            >
+                            {{ category.name }}
+                            </option>
+                        </select>
+                    </th>
+                    <th><input type="text" placeholder="Filtrar valor" /></th>
+                    <th class="input-group">
+                        <input type="date" placeholder="Data">
+                    </th>
+                    <th>
+                        <button class="btn-filter">
+                            <v-icon name="hi-solid-filter" />
+                        </button>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="expense in expenses" :key="expense.id">
+                    <th>{{ expense.description }}</th>
+                    <td>{{ categories.find(cat => cat.id === expense.category_id)?.name || '—' }}</td>
+                    <td>{{ expense.amount }}</td>
+                    <td>{{ expense.date }}</td>
+                    <th class="actions">
+                        <a class="btn-view" :href="'/dashboard/' + expense.id">
+                            <v-icon name="fa-eye" />
+                        </a>
+                        <button class="btn-delete">
+                            <v-icon name="bi-trash-fill" />
+                        </button>
+                    </th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -212,6 +229,7 @@ export default {
     width: 100%;
     border-collapse: collapse;
     min-width: 600px;
+    border-radius: 5px;
 
     caption {
         text-transform: uppercase;
@@ -237,7 +255,7 @@ export default {
         .filters th {
         padding: 0.4rem;
 
-        input {
+        input, select {
             width: 100%;
             padding: 0.4rem;
             border: 1px solid #ccc;
@@ -324,19 +342,19 @@ export default {
 
     @mixin button-style {
         padding: 0.6rem 1.2rem;
-        border-radius: 6px;
-        border: none;
         font-weight: 600;
         cursor: pointer;
         transition: background-color 0.3s;
         color: white;
+        border: 1px solid #1f232826;
+        border-radius: 5px;
 
         &:hover {
             background-color: darken($lfs-blue, 8%);
         }
     }
 
-    .btn-create {
+    .btn-view {
         @include button-style;
         background-color: $lfs-blue;
         color: white;
@@ -352,5 +370,16 @@ export default {
         @include button-style;
         background-color: $error-color;
         color: white;
+    }
+
+    .btn-filter {
+        @include button-style;
+        background-color: $lfs-blue;
+        color: white;
+    }
+
+    .actions {
+        display: flex;
+        gap: 5%;
     }
 </style>

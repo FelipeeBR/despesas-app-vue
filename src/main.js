@@ -4,9 +4,14 @@ import router from "./router";
 
 import Toast from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
+import { OhVueIcon, addIcons } from 'oh-vue-icons';
+import { BiTrashFill, FaPlusSquare, FaEye, HiSolidFilter } from "oh-vue-icons/icons";
+
+addIcons(BiTrashFill, FaPlusSquare, FaEye, HiSolidFilter);
 
 const app = createApp(App);
 
 app.use(router);
 app.use(Toast);
+app.component('v-icon', OhVueIcon);
 app.mount("#app");
