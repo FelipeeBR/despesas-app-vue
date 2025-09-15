@@ -2,8 +2,14 @@
     <MainNavbar />
     <div class="container">
         <div class="actions-buttons">
-            <button class="btn-primary">Categorias</button>
-            <button class="btn-secondary" @click="showModal = true">Nova Despesa</button>
+            <button class="btn-primary">
+                 <v-icon name="fa-list-ul" />
+                Nova Categoria
+            </button>
+            <button class="btn-secondary" @click="showModal = true">
+                <v-icon name="fa-plus-square" />
+                Nova Despesa
+            </button>
             <ModalComponent v-if="showModal" @close="showModal = false">
                 <h2>Nova Despesa</h2>
                 <form @submit.prevent="onSubmit">
@@ -84,7 +90,7 @@
                             <router-link class="btn-view" :to="{ name: 'expense-detail', params: { id: expense.id }}">
                                 <v-icon name="fa-eye" />
                             </router-link>
-                            <button class="btn-delete">
+                            <button class="btn-delete" @click="handleDelete(expense.id)">
                                 <v-icon name="bi-trash-fill" />
                             </button>
                         </th>
@@ -104,7 +110,7 @@
 import MainNavbar from "@/components/MainNavbar.vue";
 import ModalComponent from "@/components/ModalComponent.vue";
 import { onMounted, ref } from 'vue';
-import { createExpense, getExpenses } from "@/services/expense";
+import { createExpense, getExpenses, deleteExpense } from "@/services/expense";
 import { getCategories } from "@/services/category";
 import { useForm } from 'vue-hooks-form';
 import { useToast } from 'vue-toastification';
@@ -145,13 +151,26 @@ export default {
         const onSubmit = handleSubmit(async (values) => {
             try {
                 showModal.value = false;
-                await createExpense(values);
+                const response =await createExpense(values);
+                const newExpense = response.data.data;
                 $toast.success('Despesa criada com sucesso');
+                expenses.value = [...expenses.value, newExpense];
             } catch (err) {
                 console.log(err);
                 $toast.error('Erro ao criar despesa');
             }
         });
+
+        const handleDelete = async (id) => {
+            try {
+                await deleteExpense(id);
+                $toast.success('Despesa excluida com sucesso');
+                expenses.value = expenses.value.filter(expense => expense.id !== id);
+            } catch (error) {
+                console.error('Erro ao excluir despesa:', error);
+                $toast.error('Ocorreu um erro ao excluir a despesa');
+            }
+        };
 
         return {
             showModal,
@@ -161,7 +180,8 @@ export default {
             date,
             onSubmit,
             categories,
-            expenses
+            expenses,
+            handleDelete
         };
     },
     components: {
@@ -197,6 +217,7 @@ export default {
         flex-wrap: wrap;
         gap: 1rem;
         margin-bottom: 1.5rem;
+        justify-content: end;
 
         button {
             padding: 0.6rem 1.2rem;

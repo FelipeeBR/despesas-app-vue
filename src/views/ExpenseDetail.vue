@@ -31,8 +31,14 @@
                     <p v-if="date.error" class="error">{{ date.error.message }}</p>
                 </div>
                 <div class="actions-buttons">
-                    <button type="submit" class="btn-secondary">Salvar</button>
-                    <button class="btn-delete">Excluir</button>
+                    <button type="submit" class="btn-secondary">
+                        <v-icon name="fa-pen-square" />
+                        Salvar
+                    </button>
+                    <button class="btn-delete" @click="handleDelete">
+                        <v-icon name="bi-trash-fill" />
+                        Excluir
+                    </button>
                 </div>
             </form>
         </div>
@@ -46,7 +52,7 @@
 <script>
 import MainNavbar from "@/components/MainNavbar.vue";
 import { onMounted, ref, toRef, watch } from 'vue';
-import { getExpenseId, updateExpense } from '@/services/expense';
+import { getExpenseId, updateExpense, deleteExpense } from '@/services/expense';
 import { getCategories } from "@/services/category";
 import { useForm } from 'vue-hooks-form';
 import { useToast } from 'vue-toastification';
@@ -112,7 +118,18 @@ export default {
             }
         });
 
-        return { expenseId, expense, description, category, amount, date, onSubmit, categories };
+        const handleDelete = async () => {
+            try {
+                await deleteExpense(expenseId.value);
+                router.push("/dashboard");
+                $toast.success('Despesa excluida com sucesso');
+            } catch (error) {
+                console.error('Erro ao excluir despesa:', error);
+                $toast.error('Ocorreu um erro ao excluir a despesa');
+            }
+        };
+
+        return { expenseId, expense, description, category, amount, date, onSubmit, categories, handleDelete };
     },
     components: {
         MainNavbar,

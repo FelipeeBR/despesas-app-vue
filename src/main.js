@@ -5,9 +5,9 @@ import router from "./router";
 import Toast from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
 import { OhVueIcon, addIcons } from 'oh-vue-icons';
-import { BiTrashFill, FaPlusSquare, FaEye, HiSolidFilter } from "oh-vue-icons/icons";
+import { BiTrashFill, FaPlusSquare, FaEye, HiSolidFilter, FaListUl, FaPenSquare } from "oh-vue-icons/icons";
 
-addIcons(BiTrashFill, FaPlusSquare, FaEye, HiSolidFilter);
+addIcons(BiTrashFill, FaPlusSquare, FaEye, HiSolidFilter, FaListUl, FaPenSquare);
 
 const app = createApp(App);
 

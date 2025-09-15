@@ -37,3 +37,11 @@ export async function updateExpense(id, data) {
         },
     });
 }
+
+export async function deleteExpense(id) {
+    return axios.delete(`${api.defaults.baseURL}/expense/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+}
